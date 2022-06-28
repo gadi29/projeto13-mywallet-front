@@ -32,8 +32,8 @@ function App() {
           <Route path='/register' element={ <Register /> } />
           <Route path='/new_entry' element={ <NewEntry /> } />
           <Route path='/new_exit' element={ <NewExit /> } />
-          <Route path='/edit_entry?idEntry' element={ <EditEntry /> } />
-          <Route path='/edit_exit?idExit' element={ <EditExit /> } />
+          <Route path='/edit_entry' element={ <EditEntry /> } />
+          <Route path='/edit_exit' element={ <EditExit /> } />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
