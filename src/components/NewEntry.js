@@ -14,48 +14,45 @@ function NewEntry() {
   }
 
   return (
-    <Body>
-      <Container>
-        <h1>Nova entrada</h1>
-        <form onSubmit={save}>
-          <input 
-            type="number"
-            value={NewEntry.value}
-            onChange={(e) => setNewEntry({...newEntry, value: e.target.value})}
-            placeholder="Valor"
-            disabled={loading}
-            required
-          />
-          <input
-            type="text"
-            value={NewEntry.description}
-            onChange={(e) => setNewEntry({...newEntry, description: e.target.value})}
-            placeholder="Descrição"
-            disabled={loading}
-            required
-          />
-          <button type="submit">Salvar entrada</button>
-        </form>
-      </Container>
-    </Body>
+    <Container>
+      <h1>Nova entrada</h1>
+      <form onSubmit={save}>
+        <input 
+          type="number"
+          value={NewEntry.value}
+          onChange={(e) => setNewEntry({...newEntry, value: e.target.value})}
+          placeholder="Valor"
+          disabled={loading}
+          required
+        />
+        <input
+          type="text"
+          value={NewEntry.description}
+          onChange={(e) => setNewEntry({...newEntry, description: e.target.value})}
+          placeholder="Descrição"
+          disabled={loading}
+          required
+        />
+        <button type="submit">Salvar entrada</button>
+      </form>
+    </Container>
   )
 }
 
-const Body = styled.body`
-  width: 100%;
-  height: 100vh;
-`;
-
 const Container = styled.div`
   width: 100%;
-  height: 100%;
-  margin: 25px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   h1 {
     font-size: 26px;
     font-weight: 700;
     color: #FFFFFF;
 
+    margin-top: 25px;
     margin-bottom: 40px;
   }
 

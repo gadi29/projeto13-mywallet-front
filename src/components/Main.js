@@ -16,7 +16,9 @@ function Main() {
       <Container>
         <Top>
           <h1>Olá, Fulano</h1>
-          <ion-icon name="exit-outline"></ion-icon>
+          <div onClick={() => navigate('/login')}>
+            <ion-icon name="exit-outline"></ion-icon>
+          </div>
         </Top>
         <Center>
 
@@ -41,10 +43,17 @@ function Main() {
 
 const Container = styled.div`
   width: 100%;
-  padding: 25px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Top = styled.div`
+  width: 87%;
+  margin-top: 25px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -66,15 +75,17 @@ const Center = styled.div`
   background-color: #FFFFFF;
   border-radius: 5px;
 
-  width: 326px;
-  height: 446px;
+  width: 87%;
+  height: 67vh;
   margin-top: 22px;
   margin-bottom: 13px;
 `;
 
 const Bottom = styled.div`
+  width: 87%;
+
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 
   button {
@@ -85,6 +96,7 @@ const Bottom = styled.div`
 
     width: 155px;
     height: 114px;
+    margin-right: 17px;
     padding: 10px 0;
     padding-left: 10px;
     display: flex;
@@ -98,6 +110,7 @@ const Bottom = styled.div`
 
     ion-icon {
       font-size: 24px;
+      background-color: #A328D6;
     }
   }
 `;

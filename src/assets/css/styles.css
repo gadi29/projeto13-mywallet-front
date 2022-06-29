@@ -6,3 +6,7 @@
   font-family: 'Raleway', sans-serif !important;
   background-color: #8C11BE;
 }
+
+a {
+  text-decoration: none;
+}
