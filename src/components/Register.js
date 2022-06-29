@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { ThreeDots } from 'react-loader-spinner';
 
 function Register() {
   const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ function Register() {
 
   return (
     <Body>
-      <Container>
+      <Container loading={loading}>
         <h1>MyWallet</h1>
         <form onSubmit={registerUser}>
           <input
@@ -64,7 +65,7 @@ function Register() {
             disabled={loading}
             required
           />
-          <button type="submit" disabled={loading}>Cadastrar</button>
+          <button type="submit" disabled={loading}>{loading ? <ThreeDots color="#FFFFFF" width={64} height={64} /> : "Cadastrar"}</button>
         </form>
         <Link to={'/login'}>
           <p>Já tem uma conta? Entre agora!</p>
@@ -121,11 +122,10 @@ const Container = styled.div`
     }
 
     button {
-      background-color: #A328D6;
-      opacity: ${({ loading }) => loading ? '0.7' : '1'};
+      background-color: ${({ loading }) => loading ? '#8C11BE' : '#A328D6'};
       border: none;
       border-radius: 5px;
-      cursor: pointer;
+      cursor: ${({ loading }) => loading ? 'cursor' : 'pointer'};
 
       width: 326px;
       height: 46px;

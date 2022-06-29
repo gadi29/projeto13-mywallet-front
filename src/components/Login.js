@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { ThreeDots } from "react-loader-spinner";
 
 import UserContext from "../contexts/UserContext";
 
@@ -49,7 +50,7 @@ function Login() {
             disabled={loading}
             required
           />
-          <button type="submit" disabled={loading}>Entrar</button>
+          <button type="submit" disabled={loading}>{loading ? <ThreeDots color="#FFFFFF" width={64} height={64} /> : "Entrar"}</button>
         </form>
         <Link to={'/register'}>
           <p>Primeira vez? Cadastre-se!</p>
@@ -106,8 +107,7 @@ const Container = styled.div`
     }
 
     button {
-      background-color: #A328D6;
-      opacity: ${({ loading }) => loading ? '0.7' : '1'};
+      background-color: ${({ loading }) => loading ? '#8C11BE' : '#A328D6'};
       border: none;
       border-radius: 5px;
       cursor: pointer;
