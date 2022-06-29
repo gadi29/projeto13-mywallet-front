@@ -76,16 +76,17 @@ const Center = styled.div`
   border-radius: 5px;
 
   width: 87%;
-  height: 67vh;
+  height: 65vh;
   margin-top: 22px;
   margin-bottom: 13px;
 `;
 
 const Bottom = styled.div`
   width: 87%;
+  margin-bottom: 25px;
 
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
 
   button {
@@ -96,7 +97,6 @@ const Bottom = styled.div`
 
     width: 155px;
     height: 114px;
-    margin-right: 17px;
     padding: 10px 0;
     padding-left: 10px;
     display: flex;
