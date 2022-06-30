@@ -4,13 +4,6 @@ import styled from 'styled-components';
 
 function Main() {
   const navigate = useNavigate();
-  let userStorage = localStorage.getItem("user");
-
-  /*useEffect((() => {
-    if (userStorage === null) {
-      return navigate('/login');
-    }
-  }), [navigate, userStorage]);*/
 
   return (
       <Container>
@@ -111,6 +104,12 @@ const Bottom = styled.div`
     ion-icon {
       font-size: 24px;
       background-color: #A328D6;
+    }
+  }
+
+  @media screen and (max-width: 380px) {
+    button {
+      width: 130px;
     }
   }
 `;

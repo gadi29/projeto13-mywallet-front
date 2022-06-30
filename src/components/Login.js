@@ -18,7 +18,6 @@ function Login() {
     /*const response = axios.post("", {...userLogin});
 
     response.then(r => {
-        localStorage.setItem("user", JSON.stringify(r.data));
         setUser(r.data);
         setLoading(false);
         navigate('/');
@@ -121,6 +120,16 @@ const Container = styled.div`
       color: #FFFFFF;
       font-size: 20px;
       font-weight: 700;
+    }
+
+    @media screen and (max-width: 380px) {
+      input {
+        width: 301px;
+      }
+
+      button {
+        width: 301px;
+      }
     }
   }
   p {

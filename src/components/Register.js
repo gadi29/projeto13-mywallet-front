@@ -137,6 +137,16 @@ const Container = styled.div`
       font-size: 20px;
       font-weight: 700;
     }
+    
+    @media screen and (max-width: 380px) {
+      input {
+        width: 301px;
+      }
+
+      button {
+        width: 301px;
+      }
+    }
   }
   p {
     color: #FFFFFF;
