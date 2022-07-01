@@ -25,7 +25,7 @@ function Main() {
       if (r.response.status === 401) {
         return navigate('/login');
       }
-      alert(`Erro x ${r.response.status}`);
+      alert(`Erro ${r.response.status}`);
     })
   }), [loading]);
 
@@ -65,7 +65,11 @@ function Main() {
       <Container>
         <Top>
           <h1>Olá, {user.name}</h1>
-          <div onClick={() => navigate('/login')}>
+          <div onClick={() => {
+            if (window.confirm("Tem certeza que deseja sair?")) {
+              navigate('/login')
+            }
+        }}>
             <ion-icon name="exit-outline"></ion-icon>
           </div>
         </Top>
@@ -74,7 +78,7 @@ function Main() {
             {cashFlow.map(cash => 
               <Div type={cash.type}>
                 <div>
-                  <span>{cash.date.day}/{("0" + cash.date.month).slice(-2)}</span>
+                  <span>{("0" + cash.date.day).slice(-2)}/{("0" + cash.date.month).slice(-2)}</span>
                   <h3 onClick={() => editRegister(cash)}>{cash.description}</h3>
                 </div>
                 <div>
@@ -192,7 +196,7 @@ const Div = styled.div `
     margin-right: 13px;
   }
 
-  span {
+  span:last-child {
     background-color: inherit;
     font-size: 18px;
     color: #C6C6C6;
