@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ThreeDots } from "react-loader-spinner";
+import axios from 'axios';
 
 import UserContext from "../contexts/UserContext";
 
@@ -15,17 +16,21 @@ function Login() {
     e.preventDefault();
     setLoading(true);
 
-    /*const response = axios.post("", {...userLogin});
+    const response = axios.post("http://localhost:5000/sign-in", {...userLogin});
 
     response.then(r => {
-        setUser(r.data);
-        setLoading(false);
-        navigate('/');
+      setUser(r.data);
+      setLoading(false);
+      navigate('/');
     });
     response.catch(r => {
-        alert('Erro! Tente novamente...');
         setLoading(false);
-    });*/
+        if (r.response.status === 401) {
+          alert('Email ou senha não conferem.')
+        } else {
+          alert(`Erro ${r.response.status}! Tente novamente...`);
+        }
+    });
   }
 
   return (

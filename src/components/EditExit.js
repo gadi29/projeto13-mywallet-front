@@ -1,16 +1,50 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from 'styled-components';
+import axios from 'axios';
+
+import UserContext from "../contexts/UserContext";
 
 function EditExit() {
   const [loading, setLoading] = useState(false);
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+  const { id } = useParams();
   const [exit, setExit] = useState({
     value: "",
     description: ""
   });
 
+  useEffect((() => {
+    const response = axios.get(`http://localhost:5000/registers/${id}`);
+
+    response.then(r => {
+      setExit({value:r.data.value, description:r.data.description});
+    });
+    response.catch(r => alert(`Erro ${r.response.status}`));
+  }), []);
+
   function updateExit(e) {
     e.preventDefault();
     setLoading(true);
+
+    const config = {
+      headers: {
+        "Authorization": `Bearer ${user.token}`
+      }
+    }
+
+    const response = axios.put(`http://localhost:5000/registers/${id}`, {...exit}, config);
+
+    response.then(r => {
+      setLoading(false);
+      alert("Registro atualizado com sucesso!");
+      navigate('/');
+    });
+    response.catch(r => {
+      setLoading(false);
+      alert(`Erro ${r.response.status}`);
+    })
   }
 
   return (

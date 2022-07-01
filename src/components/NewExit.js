@@ -1,24 +1,46 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
+
+import UserContext from "../contexts/UserContext";
 
 function NewExit() {
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [newExit, setNewExit] = useState({
+    type: "exit",
     value: "",
     description: ""
   });
 
-  function save(e) {
+  function saveExit (e) {
     e.preventDefault();
     setLoading(true);
+
+    const config = {
+      headers: {
+        "Authorization": `Bearer ${user.token}`
+      }
+    }
+
+    const response = axios.post('http://localhost:5000/exit', {...newExit}, config);
+    response.then (r => {
+      setLoading(false);
+      alert(`Saída registrada com sucesso!`);
+      navigate('/');
+    });
+    response.catch (r => alert(`Erro ${r.response.status}`));
   }
 
   return (
     <Container>
       <h1>Nova saída</h1>
-      <form onSubmit={save}>
+      <form onSubmit={saveExit}>
         <input 
           type="number"
+          step="0.01"
           value={NewExit.value}
           onChange={(e) => setNewExit({...newExit, value: e.target.value})}
           placeholder="Valor"

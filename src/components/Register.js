@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ThreeDots } from 'react-loader-spinner';
+import axios from 'axios';
 
 function Register() {
   const [loading, setLoading] = useState(false);
@@ -9,23 +10,37 @@ function Register() {
   const [user, setUser] = useState({
     name:'',
     email:'',
-		password:''
+		password:'',
+    confirm_password:''
   });
 
   function registerUser(e) {
     e.preventDefault();
-    setLoading(true);
     
-    /*const response = axios.post('', {...user});
+    if (user.password !== user.confirm_password) {
+      return alert('Senhas não conferem.');
+    }
+
+    const { name, email, password } = user;
+
+    setLoading(true);
+    const response = axios.post('http://localhost:5000/sign-up', { name, email, password });
 
     response.then(() => {
       setLoading(false);
+      alert(`Usuário registrado com sucesso!`);
       navigate('/login');
     });
     response.catch(r => {
-      alert(`Erro ${r.response.status}`);
       setLoading(false);
-    })*/
+      if (r.response.status === 422) {
+        alert('Algum campo está preenchido inadequadamente.');
+      } else if (r.response.status === 409) {
+        alert('Este usuário já existe.');
+      } else {
+        alert(`Erro ${r.response.status}.`);
+      }
+    })
 }
 
   return (
@@ -59,8 +74,8 @@ function Register() {
           />
           <input
             type="password"
-            value={user.password}
-            onChange={(e) => setUser({...user, password: e.target.value})}
+            value={user.confirm_password}
+            onChange={(e) => setUser({...user, confirm_password: e.target.value})}
             placeholder="Confirme sua senha"
             disabled={loading}
             required

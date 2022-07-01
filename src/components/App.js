@@ -15,13 +15,8 @@ import EditEntry from './EditEntry';
 import EditExit from './EditExit';
 
 function App() {
-  let userStorage = localStorage.getItem("user");
 
-  if (userStorage !== null) {
-    userStorage = JSON.parse(userStorage);
-  }
-
-  const [user, setUser] = useState(userStorage);
+  const [user, setUser] = useState({ name: '', token: ''});
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
@@ -32,8 +27,8 @@ function App() {
           <Route path='/register' element={ <Register /> } />
           <Route path='/new_entry' element={ <NewEntry /> } />
           <Route path='/new_exit' element={ <NewExit /> } />
-          <Route path='/edit_entry' element={ <EditEntry /> } />
-          <Route path='/edit_exit' element={ <EditExit /> } />
+          <Route path='/edit_entry/:id' element={ <EditEntry /> } />
+          <Route path='/edit_exit/:id' element={ <EditExit /> } />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
