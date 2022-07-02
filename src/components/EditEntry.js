@@ -14,9 +14,15 @@ function EditEntry() {
     description: ""
   });
   const { id } = useParams();
+  
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${user.token}`
+    }
+  }
 
   useEffect((() => {
-    const response = axios.get(`http://localhost:5000/registers/${id}`);
+    const response = axios.get(`http://localhost:5000/registers/${id}`, config);
 
     response.then(r => {
       setEntry({value:r.data.value, description:r.data.description});
@@ -27,12 +33,6 @@ function EditEntry() {
   function updateEntry(e) {
     e.preventDefault();
     setLoading(true);
-
-    const config = {
-      headers: {
-        "Authorization": `Bearer ${user.token}`
-      }
-    }
 
     const response = axios.put(`http://localhost:5000/registers/${id}`, {...entry}, config);
 

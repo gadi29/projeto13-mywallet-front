@@ -40,15 +40,15 @@ function Main() {
 
   function editRegister (register) {
     if (register.type === "entry") {
-      navigate(`/edit_entry/${register._id}`);
+      navigate(`/edit_entry/${register._id}`, config);
     } else if (register.type === "exit") {
-      navigate(`/edit_exit/${register._id}`);
+      navigate(`/edit_exit/${register._id}`, config);
     }
   }
 
   function deleteRegister (register) {
     if (window.confirm("Você tem certeza que quer apagar este registro?")) {
-      const response = axios.delete(`http://localhost:5000/registers/${register._id}`)
+      const response = axios.delete(`http://localhost:5000/registers/${register._id}`, config)
       setLoading(true);
 
       response.then(() => {
