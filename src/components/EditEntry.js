@@ -22,7 +22,7 @@ function EditEntry() {
   }
 
   useEffect((() => {
-    const response = axios.get(`http://localhost:5000/registers/${id}`, config);
+    const response = axios.get(`https://git.heroku.com/projeto-13-my-wallet.git/registers/${id}`, config);
 
     response.then(r => {
       setEntry({value:r.data.value, description:r.data.description});
@@ -34,7 +34,7 @@ function EditEntry() {
     e.preventDefault();
     setLoading(true);
 
-    const response = axios.put(`http://localhost:5000/registers/${id}`, {...entry}, config);
+    const response = axios.put(`https://git.heroku.com/projeto-13-my-wallet.git/registers/${id}`, {...entry}, config);
 
     response.then(r => {
       setLoading(false);

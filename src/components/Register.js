@@ -24,7 +24,7 @@ function Register() {
     const { name, email, password } = user;
 
     setLoading(true);
-    const response = axios.post('http://localhost:5000/sign-up', { name, email, password });
+    const response = axios.post('https://git.heroku.com/projeto-13-my-wallet.git/sign-up', { name, email, password });
 
     response.then(() => {
       setLoading(false);

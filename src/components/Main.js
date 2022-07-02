@@ -18,7 +18,7 @@ function Main() {
   }
 
   useEffect((() => {
-    const response = axios.get('http://localhost:5000/registers', config);
+    const response = axios.get('https://git.heroku.com/projeto-13-my-wallet.git/registers', config);
 
     response.then(r => setCashFlow([...r.data]));
     response.catch(r => {
@@ -48,7 +48,7 @@ function Main() {
 
   function deleteRegister (register) {
     if (window.confirm("Você tem certeza que quer apagar este registro?")) {
-      const response = axios.delete(`http://localhost:5000/registers/${register._id}`, config)
+      const response = axios.delete(`https://git.heroku.com/projeto-13-my-wallet.git/registers/${register._id}`, config)
       setLoading(true);
 
       response.then(() => {

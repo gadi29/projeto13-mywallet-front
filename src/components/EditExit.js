@@ -16,7 +16,7 @@ function EditExit() {
   });
 
   useEffect((() => {
-    const response = axios.get(`http://localhost:5000/registers/${id}`);
+    const response = axios.get(`https://git.heroku.com/projeto-13-my-wallet.git/registers/${id}`);
 
     response.then(r => {
       setExit({value:r.data.value, description:r.data.description});
@@ -34,7 +34,7 @@ function EditExit() {
       }
     }
 
-    const response = axios.put(`http://localhost:5000/registers/${id}`, {...exit}, config);
+    const response = axios.put(`https://git.heroku.com/projeto-13-my-wallet.git/registers/${id}`, {...exit}, config);
 
     response.then(r => {
       setLoading(false);
