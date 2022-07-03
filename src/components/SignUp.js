@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { ThreeDots } from 'react-loader-spinner';
+import styled from 'styled-components';
 import axios from 'axios';
 
-function Register() {
+function SignUp() {
   const [loading, setLoading] = useState(false);
-	const navigate = useNavigate();
   const [user, setUser] = useState({
     name:'',
     email:'',
 		password:'',
     confirm_password:''
   });
+
+  const navigate = useNavigate();
 
   function registerUser(e) {
     e.preventDefault();
@@ -21,15 +22,14 @@ function Register() {
       return alert('Senhas não conferem.');
     }
 
-    const { name, email, password } = user;
-
     setLoading(true);
+    const { name, email, password } = user;
     const response = axios.post('https://projeto-13-my-wallet.herokuapp.com/sign-up', { name, email, password });
 
     response.then(() => {
-      setLoading(false);
       alert(`Usuário registrado com sucesso!`);
-      navigate('/login');
+      setLoading(false);
+      navigate('/sign-in');
     });
     response.catch(r => {
       setLoading(false);
@@ -40,11 +40,10 @@ function Register() {
       } else {
         alert(`Erro ${r.response.status}.`);
       }
-    })
-}
+    });
+  }
 
   return (
-    <Body>
       <Container loading={loading}>
         <h1>MyWallet</h1>
         <form onSubmit={registerUser}>
@@ -82,23 +81,18 @@ function Register() {
           />
           <button type="submit" disabled={loading}>{loading ? <ThreeDots color="#FFFFFF" width={64} height={64} /> : "Cadastrar"}</button>
         </form>
-        <Link to={'/login'}>
+        <Link to={'/sign-in'}>
           <p>Já tem uma conta? Entre agora!</p>
         </Link>
       </Container>
-    </Body>
-  )
+  );
 }
 
-const Body = styled.body`
+const Container = styled.div`
   background-color: #8C11BE;
+
   width: 100%;
   height: 100vh;
-`;
-
-const Container = styled.div`    
-  width: 100%;
-  height: 100%;
   
   display: flex;
   flex-direction: column;
@@ -146,6 +140,7 @@ const Container = styled.div`
 
       width: 326px;
       height: 46px;
+
       display: flex;
       justify-content: center;
       align-items: center;
@@ -165,6 +160,7 @@ const Container = styled.div`
       }
     }
   }
+  
   p {
     color: #FFFFFF;
     font-weight: 700;
@@ -174,4 +170,4 @@ const Container = styled.div`
   }
 `;
 
-export default Register;
+export default SignUp;

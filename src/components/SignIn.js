@@ -1,21 +1,22 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { ThreeDots } from "react-loader-spinner";
+import styled from 'styled-components';
 import axios from 'axios';
 
 import UserContext from "../contexts/UserContext";
 
-function Login() {
+function SignIn() {
+  const { setUser } = useContext(UserContext);
   const [userLogin, setUserLogin] = useState({ email:"", password:"" });
   const [loading, setLoading] = useState(false);
-  const { setUser } = useContext(UserContext);
+
   const navigate = useNavigate();
 
   function handleLogin(e) {
     e.preventDefault();
+    
     setLoading(true);
-
     const response = axios.post("https://projeto-13-my-wallet.herokuapp.com/sign-in", {...userLogin});
 
     response.then(r => {
@@ -26,7 +27,7 @@ function Login() {
     response.catch(r => {
         setLoading(false);
         if (r.response.status === 401) {
-          alert('Email ou senha não conferem.')
+          alert('Email ou senha não conferem.');
         } else {
           alert(`Erro ${r.response.status}! Tente novamente...`);
         }
@@ -34,7 +35,6 @@ function Login() {
   }
 
   return (
-    <Body>
       <Container loading={loading} >
         <h1>MyWallet</h1>
         <form onSubmit={handleLogin}>
@@ -56,23 +56,18 @@ function Login() {
           />
           <button type="submit" disabled={loading}>{loading ? <ThreeDots color="#FFFFFF" width={64} height={64} /> : "Entrar"}</button>
         </form>
-        <Link to={'/register'}>
+        <Link to={'/sign-up'}>
           <p>Primeira vez? Cadastre-se!</p>
         </Link>
       </Container>
-    </Body>
-  )
+  );
 }
 
-const Body = styled.body`
+const Container = styled.div`    
   background-color: #8C11BE;
+  
   width: 100%;
   height: 100vh;
-`;
-
-const Container = styled.div`    
-  width: 100%;
-  height: 100%;
   
   display: flex;
   flex-direction: column;
@@ -120,6 +115,7 @@ const Container = styled.div`
 
       width: 326px;
       height: 46px;
+
       display: flex;
       justify-content: center;
       align-items: center;
@@ -139,6 +135,7 @@ const Container = styled.div`
       }
     }
   }
+
   p {
     color: #FFFFFF;
     font-weight: 700;
@@ -148,4 +145,4 @@ const Container = styled.div`
   }
 `;
 
-export default Login;
+export default SignIn;

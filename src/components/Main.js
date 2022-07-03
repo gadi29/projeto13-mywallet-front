@@ -1,29 +1,28 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { MutatingDots } from 'react-loader-spinner';
 import styled from 'styled-components';
 import axios from 'axios';
-import { MutatingDots } from 'react-loader-spinner';
 import dayjs from 'dayjs';
 
+import ShowRegisters from './ShowRegisters';
 import UserContext from "../contexts/UserContext";
 
 function Main() {
-  const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const [cashFlow, setCashFlow] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [getRegisters, setGetRegisters] = useState(0);
+  const [monthRegisters, setMonthRegisters] = useState([]);
+  const [reloadRegisters, setReloadRegisters] = useState(true);
   const [date, setDate] = useState(dayjs());
-  const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-                  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-
   const config = {
     headers: {
       "Authorization": `Bearer ${user.token}`
     }
   };
 
-  function orderArray (a, b) {
+  const navigate = useNavigate();
+
+  function orderArrayByDate (a, b) {
     if (a.date > b.date) {
       return 1;
     }
@@ -38,92 +37,37 @@ function Main() {
     const response = axios.get(`https://projeto-13-my-wallet.herokuapp.com/registers/${date.format('MM-YYYY')}`, config);
 
     response.then(r => {
-      setCashFlow([...r.data].sort(orderArray));
+      setMonthRegisters([...r.data].sort(orderArrayByDate));
       setLoading(false);
     });
     response.catch(r => {
       if (r.response.status === 401) {
-        return navigate('/login');
+        return navigate('/sign-in');
       };
       alert(`Erro ${r.response.status}`);
       setLoading(false);
-    })
-  }), [getRegisters, date]);
+    });
+  }), [reloadRegisters, date]);
 
-  let sold = 0;
-  for (let i = 0; i < cashFlow.length; i++) {
-    if (cashFlow[i].type === "entry") {
-      sold += Number(cashFlow[i].value);
-    } else if (cashFlow[i].type === "exit") {
-      sold -= Number(cashFlow[i].value);
+  function exitUser () {
+    if (window.confirm("Tem certeza que deseja sair?")) {
+      navigate('/sign-in');
     }
-  };
-
-  function editRegister (register) {
-    if (register.type === "entry") {
-      navigate(`/edit_entry/${register._id}`);
-    } else if (register.type === "exit") {
-      navigate(`/edit_exit/${register._id}`);
-    }
-  };
-
-  function deleteRegister (register) {
-    if (window.confirm("Você tem certeza que quer apagar este registro?")) {
-      const response = axios.delete(`https://projeto-13-my-wallet.herokuapp.com/registers/${register._id}`, config)
-      setLoading(true);
-
-      response.then(() => {
-        setGetRegisters(getRegisters + 1);
-      });
-      response.catch(r => {
-        setLoading(false);
-        alert(r.response.status);
-      });
-    };
-  };
+  }
 
   return (
       <Container>
         <Top loading={loading}>
           <h1>Olá, {user.name}</h1>
-          <div onClick={() => {
-            if (window.confirm("Tem certeza que deseja sair?")) {
-              navigate('/login');
-            }
-        }}>
+          <div onClick={exitUser}>
             <ion-icon name="exit-outline"></ion-icon>
           </div>
         </Top>
-        <SelectMonth loading={loading}>
-          <p onClick={() => setDate(date.subtract(1, 'month'))}>{`<`}</p>
-          <h4>{months[date.month()]}</h4>
-          <p onClick={() => setDate(date.add(1, 'month'))}>{`>`}</p>
-        </SelectMonth>
         <Center loading={loading}>
           {loading ? <MutatingDots ariaLabel="loading-indicator" /> 
-          : cashFlow.length > 0 ?
-            <>
-              <DivCash>
-                {cashFlow.map(cash => 
-                  <Div type={cash.type}>
-                    <div>
-                      <span>{dayjs(cash.date).format('DD/MM')}</span>
-                      <h3 onClick={() => editRegister(cash)}>{cash.description}</h3>
-                    </div>
-                    <div>
-                      <h2>{Number(cash.value).toFixed(2).replace('.', ',')}</h2>
-                      <span onClick={() => deleteRegister(cash)}>X</span>
-                    </div>
-                  </Div>
-                )}
-              </DivCash>
-              <DivSaldo sold={sold} >
-                <h1>SALDO MENSAL</h1>
-                <h2>{sold.toFixed(2).replace('-','').replace('.',',')}</h2>
-              </DivSaldo>
-            </> 
-            : <h5>Não há registros neste mês</h5>
-          }
+          : monthRegisters.length > 0 ? 
+          <ShowRegisters monthRegisters={monthRegisters} config={config} date={date} setDate={setDate} setLoading={setLoading} reloadRegisters={reloadRegisters} setReloadRegisters={setReloadRegisters}/>
+            : <h5>Não há registros neste mês</h5>}
         </Center>
         <Bottom loading={loading}>
           <Link to={'/new_entry'}>
@@ -140,11 +84,12 @@ function Main() {
           </Link>
         </Bottom>
       </Container>
-  )
+  );
 }
 
 const Container = styled.div`
   background-color: #8C11BE;
+
   width: 100%;
   height: 100vh;
 
@@ -174,31 +119,6 @@ const Top = styled.div`
   }
 `;
 
-const SelectMonth = styled.div`
-  width: 87%;
-  margin-top: 20px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-  p {
-    color: #FFFFFF;
-    font-size: 20px;
-    font-weight: 700;
-
-    cursor: ${({ loading }) => loading ? "initial" : "pointer"};
-  }
-
-  h4 {
-    color: #FFFFFF;
-    font-size: 20px;
-    font-weight: 700;
-
-    margin: 0 15px;
-  }
-`;
-
 const Center = styled.div`
   background-color: ${({ loading }) => loading ? "#F5F5F5" : "#FFFFFF"};
   border-radius: 5px;
@@ -207,9 +127,9 @@ const Center = styled.div`
   height: 63vh;
   margin-top: 10px;
   margin-bottom: 13px;
-  padding: 35px 20px;
+  padding: 0 20px;
+  
   overflow: scroll;
-
   display: flex;
   flex-direction: ${({ loading }) => loading ? "row" : "column"};
   justify-content: ${({ loading }) => loading ? "center" : "space-between"};
@@ -222,78 +142,8 @@ const Center = styled.div`
   h5 {
     font-size: 18px;
     color: #C2C2C2;
+
     text-align: center;
-  }
-`;
-
-const DivCash = styled.div `
-  background-color: inherit;
-
-  display: flex;
-  flex-direction: column;
-`;
-
-const Div = styled.div `
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
-  background-color: inherit;
-
-  div {
-    background-color: inherit;
-    display: flex;
-  }
-
-  span {
-    background-color: inherit;
-    font-size: 16px;
-    color: #C6C6C6;
-
-    margin-right: 10px;
-  }
-
-  h3 {
-    background-color: inherit;
-    font-size: 16px;
-    color: #000000;
-    cursor: pointer;
-  }
-
-  h2 {
-    background-color: inherit;
-    font-size: 16px;
-    color: ${({ type }) => type === 'entry' ? "#03AC00" : "#C70000"};
-    margin-right: 13px;
-  }
-
-  span:last-child {
-    background-color: inherit;
-    font-size: 18px;
-    color: #C6C6C6;
-    cursor: pointer;
-  }
-`;
-
-const DivSaldo = styled.div`
-  background-color: inherit;
-
-  margin-top: 25px;
-
-  display: flex;
-  justify-content: space-between;
-
-  h1 {
-    background-color: inherit;
-    font-size: 17px;
-    font-weight: 700;
-    color: #000000;
-  }
-
-  h2 {
-    background-color: inherit;
-    font-size: 17px;
-    color: ${({ sold }) => sold > 0 ? "#03AC00" : "#C70000"}
   }
 `;
 
@@ -314,6 +164,7 @@ const Bottom = styled.div`
     height: 114px;
     padding: 10px 0;
     padding-left: 10px;
+
     display: flex;
     flex-direction: column;
     align-items: flex-start;

@@ -1,28 +1,28 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { ThreeDots } from "react-loader-spinner";
 import styled from 'styled-components';
 import axios from 'axios';
-import { ThreeDots } from "react-loader-spinner";
 import dayjs from "dayjs";
 
 import UserContext from "../contexts/UserContext";
 
 function EditEntry() {
-  const [loading, setLoading] = useState(false);
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
+  const { id } = useParams();
+  const [loading, setLoading] = useState(false);
   const [entry, setEntry] = useState({
     value: "",
     description: "",
     date: dayjs().valueOf()
   });
-  const { id } = useParams();
-  
   const config = {
     headers: {
       "Authorization": `Bearer ${user.token}`
     }
-  }
+  };
+  
+  const navigate = useNavigate();
 
   useEffect((() => {
     setLoading(true);
@@ -33,26 +33,26 @@ function EditEntry() {
       setLoading(false);
     });
     response.catch(r => {
+      alert(`Erro ${r.response.status}`);
       setLoading(false);
-      alert(`Erro ${r.response.status}`)
     });
   }), []);
 
   function updateEntry(e) {
     e.preventDefault();
+    
     setLoading(true);
-
     const response = axios.put(`https://projeto-13-my-wallet.herokuapp.com/registers/${id}`, {...entry}, config);
-
-    response.then(r => {
-      setLoading(false);
+    
+    response.then(() => {
       alert("Registro atualizado com sucesso!");
+      setLoading(false);
       navigate('/');
     });
     response.catch(r => {
-      setLoading(false);
       alert(`Erro ${r.response.status}`);
-    })
+      setLoading(false);
+    });
   }
 
   return (
@@ -84,7 +84,7 @@ function EditEntry() {
         <button type="submit" disabled={loading}>{loading ? <ThreeDots color="#FFFFFF" width={64} height={64} /> : "Atualizar entrada"}</button>
       </form>
     </Container>
-  )
+  );
 }
 
 const Container = styled.div`
@@ -138,6 +138,7 @@ const Container = styled.div`
 
       width: 326px;
       height: 46px;
+      
       display: flex;
       justify-content: center;
       align-items: center;

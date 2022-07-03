@@ -7,8 +7,8 @@ import '../assets/css/reset.css';
 import '../assets/css/styles.css';
 
 import Main from './Main';
-import Login from './Login';
-import Register from './Register';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
 import NewEntry from './NewEntry';
 import NewExit from './NewExit';
 import EditEntry from './EditEntry';
@@ -23,8 +23,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={ <Main /> } />
-          <Route path='/login' element={ <Login /> } />
-          <Route path='/register' element={ <Register /> } />
+          <Route path='/sign-in' element={ <SignIn /> } />
+          <Route path='/sign-up' element={ <SignUp /> } />
           <Route path='/new_entry' element={ <NewEntry /> } />
           <Route path='/new_exit' element={ <NewExit /> } />
           <Route path='/edit_entry/:id' element={ <EditEntry /> } />

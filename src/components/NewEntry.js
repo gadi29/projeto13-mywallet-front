@@ -1,42 +1,43 @@
 import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { ThreeDots } from "react-loader-spinner";
 import styled from 'styled-components';
 import axios from 'axios';
-import { ThreeDots } from "react-loader-spinner";
 import dayjs from 'dayjs';
 
 import UserContext from "../contexts/UserContext";
 
 function NewEntry() {
-  const [loading, setLoading] = useState(false);
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [newEntry, setNewEntry] = useState({
     type: "entry",
     value: "",
     description: "",
     date: dayjs().valueOf()
   });
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${user.token}`
+    }
+  };
+
+  const navigate = useNavigate();
 
   function saveEntry (e) {
     e.preventDefault();
+    
     setLoading(true);
-
-    const config = {
-      headers: {
-        "Authorization": `Bearer ${user.token}`
-      }
-    }
-
     const response = axios.post('https://projeto-13-my-wallet.herokuapp.com/entry', {...newEntry}, config);
-    response.then (r => {
-      setLoading(false);
+    
+    response.then (() => {
       alert(`Entrada registrada com sucesso!`);
+      setLoading(false);
       navigate('/');
     });
     response.catch (r => {
-      setLoading(false);
       alert(`Erro ${r.response.status}`);
+      setLoading(false);
     });
   }
 
@@ -70,7 +71,7 @@ function NewEntry() {
         <button type="submit" disabled={loading}>{loading ? <ThreeDots color="#FFFFFF" width={64} height={64} /> : "Salvar entrada"}</button>
       </form>
     </Container>
-  )
+  );
 }
 
 const Container = styled.div`
@@ -124,6 +125,7 @@ const Container = styled.div`
 
       width: 326px;
       height: 46px;
+      
       display: flex;
       justify-content: center;
       align-items: center;
