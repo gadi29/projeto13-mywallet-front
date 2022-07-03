@@ -204,15 +204,20 @@ const Center = styled.div`
   border-radius: 5px;
 
   width: 87%;
-  height: 65vh;
+  height: 63vh;
   margin-top: 10px;
   margin-bottom: 13px;
   padding: 35px 20px;
+  overflow: scroll;
 
   display: flex;
   flex-direction: ${({ loading }) => loading ? "row" : "column"};
   justify-content: ${({ loading }) => loading ? "center" : "space-between"};
   align-items: ${({ loading }) => loading ? "center" : "initial"};
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   h5 {
     font-size: 18px;
@@ -272,6 +277,8 @@ const Div = styled.div `
 
 const DivSaldo = styled.div`
   background-color: inherit;
+
+  margin-top: 25px;
 
   display: flex;
   justify-content: space-between;

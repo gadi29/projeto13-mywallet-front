@@ -81,7 +81,6 @@ function EditExit() {
           onChange={(e) => setExit({...exit, date: dayjs(e.target.value).valueOf()})}
           required
         />
-        <p>Formato: Mês / Dia / Ano</p>
         <button type="submit" disabled={loading}>{loading ? <ThreeDots color="#FFFFFF" width={64} height={64} /> : "Atualizar saída"}</button>
       </form>
     </Container>
@@ -128,18 +127,6 @@ const Container = styled.div`
         color: #000000;
         font-size: 20px;
       }
-    }
-
-    input:last-of-type {
-      margin-bottom: 8px;
-    }
-
-    p {
-      color: #FFFFFF;
-      font-size: 15px;
-
-      margin-left: 10px;
-      margin-bottom: 13px;
     }
 
     button {
