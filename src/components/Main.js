@@ -34,7 +34,7 @@ function Main() {
       alert(`Erro ${r.response.status}`);
       setLoading(false);
     })
-  }), []);
+  }), [getRegisters]);
 
   let sold = 0;
   for (let i = 0; i < cashFlow.length; i++) {
@@ -59,7 +59,6 @@ function Main() {
       setLoading(true);
 
       response.then(() => {
-        setLoading(false);
         setGetRegisters(getRegisters + 1);
       });
       response.catch(r => {
