@@ -65,6 +65,7 @@ function Login() {
 }
 
 const Body = styled.body`
+  background-color: #8C11BE;
   width: 100%;
   height: 100vh;
 `;
@@ -82,6 +83,7 @@ const Container = styled.div`
     font-family: 'Saira Stencil One', cursive !important;
     color: #FFFFFF;
     font-size: 32px;
+    cursor: default;
 
     margin-bottom: 25px;
   }

@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import { ThreeDots } from "react-loader-spinner";
 
 import UserContext from "../contexts/UserContext";
 
@@ -58,18 +59,19 @@ function NewEntry() {
           disabled={loading}
           required
         />
-        <button type="submit">Salvar entrada</button>
+        <button type="submit" disabled={loading}>{loading ? <ThreeDots color="#FFFFFF" width={64} height={64} /> : "Salvar entrada"}</button>
       </form>
     </Container>
   )
 }
 
 const Container = styled.div`
+  background-color: #8C11BE;
   width: 100%;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 
   h1 {
@@ -77,7 +79,7 @@ const Container = styled.div`
     font-weight: 700;
     color: #FFFFFF;
 
-    margin-top: 25px;
+    margin-top: 35px;
     margin-bottom: 40px;
   }
 

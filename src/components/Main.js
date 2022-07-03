@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import { MutatingDots } from 'react-loader-spinner';
 
 import UserContext from "../contexts/UserContext";
 
@@ -15,19 +16,24 @@ function Main() {
     headers: {
       "Authorization": `Bearer ${user.token}`
     }
-  }
+  };
 
   useEffect((() => {
+    setLoading(true);
     const response = axios.get('https://projeto-13-my-wallet.herokuapp.com/registers', config);
 
-    response.then(r => setCashFlow([...r.data]));
+    response.then(r => {
+      setCashFlow([...r.data]);
+      setLoading(false);
+    });
     response.catch(r => {
       if (r.response.status === 401) {
         return navigate('/login');
-      }
+      };
       alert(`Erro ${r.response.status}`);
+      setLoading(false);
     })
-  }), [loading]);
+  }), []);
 
   let sold = 0;
   for (let i = 0; i < cashFlow.length; i++) {
@@ -63,45 +69,49 @@ function Main() {
 
   return (
       <Container>
-        <Top>
+        <Top loading={loading}>
           <h1>Olá, {user.name}</h1>
           <div onClick={() => {
             if (window.confirm("Tem certeza que deseja sair?")) {
-              navigate('/login')
+              navigate('/login');
             }
         }}>
             <ion-icon name="exit-outline"></ion-icon>
           </div>
         </Top>
         <Center loading={loading}>
-          <DivCash>
-            {cashFlow.map(cash => 
-              <Div type={cash.type}>
-                <div>
-                  <span>{("0" + cash.date.day).slice(-2)}/{("0" + cash.date.month).slice(-2)}</span>
-                  <h3 onClick={() => editRegister(cash)}>{cash.description}</h3>
-                </div>
-                <div>
-                  <h2>{Number(cash.value).toFixed(2).replace('.', ',')}</h2>
-                  <span onClick={() => deleteRegister(cash)}>X</span>
-                </div>
-              </Div>
-            )}
-          </DivCash>
-          <DivSaldo sold={sold} >
-            <h1>SALDO</h1>
-            <h2>{sold.toFixed(2).replace('-','').replace('.',',')}</h2>
-          </DivSaldo>
+          {loading ? <MutatingDots ariaLabel="loading-indicator" /> : 
+            <>
+              <DivCash>
+                {cashFlow.map(cash => 
+                  <Div type={cash.type}>
+                    <div>
+                      <span>{("0" + cash.date.day).slice(-2)}/{("0" + cash.date.month).slice(-2)}</span>
+                      <h3 onClick={() => editRegister(cash)}>{cash.description}</h3>
+                    </div>
+                    <div>
+                      <h2>{Number(cash.value).toFixed(2).replace('.', ',')}</h2>
+                      <span onClick={() => deleteRegister(cash)}>X</span>
+                    </div>
+                  </Div>
+                )}
+              </DivCash>
+              <DivSaldo sold={sold} >
+                <h1>SALDO</h1>
+                <h2>{sold.toFixed(2).replace('-','').replace('.',',')}</h2>
+              </DivSaldo>
+            </>
+          }
         </Center>
-        <Bottom>
+        <Bottom loading={loading}>
           <Link to={'/new_entry'}>
-            <button>
+            <button disabled={loading}>
               <ion-icon name="add-circle-outline"></ion-icon>
               Nova entrada
             </button>
           </Link>
           <Link to={'/new_exit'}>
-            <button>
+            <button disabled={loading}>
               <ion-icon name="remove-circle-outline"></ion-icon>
               Nova saída
             </button>
@@ -112,17 +122,18 @@ function Main() {
 }
 
 const Container = styled.div`
+  background-color: #8C11BE;
   width: 100%;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 `;
 
 const Top = styled.div`
   width: 87%;
-  margin-top: 25px;
+  margin-top: 35px;
 
   display: flex;
   justify-content: space-between;
@@ -137,12 +148,12 @@ const Top = styled.div`
   ion-icon {
     font-size: 30px;
     color: #FFFFFF;
-    cursor: pointer;
+    cursor: ${({ loading }) => loading ? "initial" : "pointer"};
   }
 `;
 
 const Center = styled.div`
-  background-color: ${({ loading }) => loading ? "#DCDCDC" : "#FFFFFF"};
+  background-color: ${({ loading }) => loading ? "#F5F5F5" : "#FFFFFF"};
   border-radius: 5px;
 
   width: 87%;
@@ -152,8 +163,9 @@ const Center = styled.div`
   padding: 35px 20px;
 
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-direction: ${({ loading }) => loading ? "row" : "column"};
+  justify-content: ${({ loading }) => loading ? "center" : "space-between"};
+  align-items: ${({ loading }) => loading ? "center" : "initial"};
 `;
 
 const DivCash = styled.div `
@@ -187,6 +199,7 @@ const Div = styled.div `
     background-color: inherit;
     font-size: 16px;
     color: #000000;
+    cursor: pointer;
   }
 
   h2 {
@@ -233,10 +246,10 @@ const Bottom = styled.div`
   align-items: center;
 
   button {
-    background-color: #A328D6;
+    background-color: ${({ loading }) => loading ? "#A341BE" : "#A328D6"};
     border: none;
     border-radius: 5px;
-    cursor: pointer;
+    cursor: ${({ loading }) => loading ? "initial" : "pointer"};
 
     width: 155px;
     height: 114px;
