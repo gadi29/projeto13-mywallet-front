@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { MutatingDots } from 'react-loader-spinner';
+import dayjs from 'dayjs';
 
 import UserContext from "../contexts/UserContext";
 
@@ -87,7 +88,7 @@ function Main() {
                 {cashFlow.map(cash => 
                   <Div type={cash.type}>
                     <div>
-                      <span>{("0" + cash.date.day).slice(-2)}/{("0" + cash.date.month).slice(-2)}</span>
+                      <span>{dayjs(cash.date).format('DD/MM')}</span>
                       <h3 onClick={() => editRegister(cash)}>{cash.description}</h3>
                     </div>
                     <div>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { ThreeDots } from "react-loader-spinner";
+import dayjs from 'dayjs';
 
 import UserContext from "../contexts/UserContext";
 
@@ -13,7 +14,8 @@ function NewExit() {
   const [newExit, setNewExit] = useState({
     type: "exit",
     value: "",
-    description: ""
+    description: "",
+    date: dayjs().valueOf()
   });
 
   function saveExit (e) {

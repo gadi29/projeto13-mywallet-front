@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { ThreeDots } from "react-loader-spinner";
+import dayjs from 'dayjs';
 
 import UserContext from "../contexts/UserContext";
 
@@ -13,8 +14,12 @@ function NewEntry() {
   const [newEntry, setNewEntry] = useState({
     type: "entry",
     value: "",
-    description: ""
+    description: "",
+    date: dayjs().valueOf()
   });
+
+  const dateToday = dayjs().valueOf();
+  console.log(dayjs(dateToday).format('DD/MM'));
 
   function saveEntry (e) {
     e.preventDefault();
