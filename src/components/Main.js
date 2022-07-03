@@ -13,6 +13,9 @@ function Main() {
   const [cashFlow, setCashFlow] = useState([]);
   const [loading, setLoading] = useState(false);
   const [getRegisters, setGetRegisters] = useState(0);
+  const dateNow = dayjs();
+  const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
   const config = {
     headers: {
@@ -22,7 +25,7 @@ function Main() {
 
   useEffect((() => {
     setLoading(true);
-    const response = axios.get('https://projeto-13-my-wallet.herokuapp.com/registers', config);
+    const response = axios.get(`https://projeto-13-my-wallet.herokuapp.com/registers/${dateNow.format('MM-YYYY')}`, config);
 
     response.then(r => {
       setCashFlow([...r.data]);
@@ -84,6 +87,7 @@ function Main() {
         <Center loading={loading}>
           {loading ? <MutatingDots ariaLabel="loading-indicator" /> : 
             <>
+            <h1>{months[dateNow.month()]}</h1>
               <DivCash>
                 {cashFlow.map(cash => 
                   <Div type={cash.type}>
