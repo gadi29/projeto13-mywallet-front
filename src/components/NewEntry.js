@@ -18,9 +18,6 @@ function NewEntry() {
     date: dayjs().valueOf()
   });
 
-  const dateToday = dayjs().valueOf();
-  console.log(dayjs(dateToday).format('DD/MM'));
-
   function saveEntry (e) {
     e.preventDefault();
     setLoading(true);
@@ -62,6 +59,12 @@ function NewEntry() {
           onChange={(e) => setNewEntry({...newEntry, description: e.target.value})}
           placeholder="Descrição"
           disabled={loading}
+          required
+        />
+        <input
+          type="date"
+          value={dayjs(newEntry.date).format('YYYY-MM-DD')}
+          onChange={(e) => setNewEntry({...newEntry, date: dayjs(e.target.value).valueOf()})}
           required
         />
         <button type="submit" disabled={loading}>{loading ? <ThreeDots color="#FFFFFF" width={64} height={64} /> : "Salvar entrada"}</button>

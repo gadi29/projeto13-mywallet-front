@@ -58,6 +58,12 @@ function NewExit() {
           disabled={loading}
           required
         />
+        <input
+          type="date"
+          value={dayjs(newExit.date).format('YYYY-MM-DD')}
+          onChange={(e) => setNewExit({...newExit, date: dayjs(e.target.value).valueOf()})}
+          required
+        />
         <button type="submit" disabled={loading}>{loading ? <ThreeDots color="#FFFFFF" width={64} height={64} /> : "Salvar saída"}</button>
       </form>
     </Container>
