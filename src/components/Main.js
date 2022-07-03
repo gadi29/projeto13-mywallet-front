@@ -100,7 +100,8 @@ function Main() {
           <p onClick={() => setDate(date.add(1, 'month'))}>{`>`}</p>
         </SelectMonth>
         <Center loading={loading}>
-          {loading ? <MutatingDots ariaLabel="loading-indicator" /> : 
+          {loading ? <MutatingDots ariaLabel="loading-indicator" /> 
+          : cashFlow.length > 0 ?
             <>
               <DivCash>
                 {cashFlow.map(cash => 
@@ -120,7 +121,8 @@ function Main() {
                 <h1>SALDO MENSAL</h1>
                 <h2>{sold.toFixed(2).replace('-','').replace('.',',')}</h2>
               </DivSaldo>
-            </>
+            </> 
+            : <h5>Não há registros neste mês</h5>
           }
         </Center>
         <Bottom loading={loading}>
@@ -211,6 +213,12 @@ const Center = styled.div`
   flex-direction: ${({ loading }) => loading ? "row" : "column"};
   justify-content: ${({ loading }) => loading ? "center" : "space-between"};
   align-items: ${({ loading }) => loading ? "center" : "initial"};
+
+  h5 {
+    font-size: 18px;
+    color: #C2C2C2;
+    text-align: center;
+  }
 `;
 
 const DivCash = styled.div `
@@ -310,7 +318,6 @@ const Bottom = styled.div`
 
     ion-icon {
       font-size: 24px;
-      background-color: #A328D6;
     }
   }
 
