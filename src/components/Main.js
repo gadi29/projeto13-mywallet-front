@@ -11,6 +11,7 @@ function Main() {
   const { user } = useContext(UserContext);
   const [cashFlow, setCashFlow] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [getRegisters, setGetRegisters] = useState(0);
 
   const config = {
     headers: {
@@ -33,7 +34,7 @@ function Main() {
       alert(`Erro ${r.response.status}`);
       setLoading(false);
     })
-  }), [loading]);
+  }), []);
 
   let sold = 0;
   for (let i = 0; i < cashFlow.length; i++) {
@@ -42,15 +43,15 @@ function Main() {
     } else if (cashFlow[i].type === "exit") {
       sold -= Number(cashFlow[i].value);
     }
-  }
+  };
 
   function editRegister (register) {
     if (register.type === "entry") {
-      navigate(`/edit_entry/${register._id}`, config);
+      navigate(`/edit_entry/${register._id}`);
     } else if (register.type === "exit") {
-      navigate(`/edit_exit/${register._id}`, config);
+      navigate(`/edit_exit/${register._id}`);
     }
-  }
+  };
 
   function deleteRegister (register) {
     if (window.confirm("Você tem certeza que quer apagar este registro?")) {
@@ -59,13 +60,14 @@ function Main() {
 
       response.then(() => {
         setLoading(false);
+        setGetRegisters(getRegisters + 1);
       });
       response.catch(r => {
         setLoading(false);
         alert(r.response.status);
-      })
-    }
-  }
+      });
+    };
+  };
 
   return (
       <Container>
