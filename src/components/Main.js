@@ -13,7 +13,7 @@ function Main() {
   const [cashFlow, setCashFlow] = useState([]);
   const [loading, setLoading] = useState(false);
   const [getRegisters, setGetRegisters] = useState(0);
-  const dateNow = dayjs();
+  const [date, setDate] = useState(dayjs());
   const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
                   'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
@@ -25,7 +25,7 @@ function Main() {
 
   useEffect((() => {
     setLoading(true);
-    const response = axios.get(`https://projeto-13-my-wallet.herokuapp.com/registers/${dateNow.format('MM-YYYY')}`, config);
+    const response = axios.get(`https://projeto-13-my-wallet.herokuapp.com/registers/${date.format('MM-YYYY')}`, config);
 
     response.then(r => {
       setCashFlow([...r.data]);
@@ -38,7 +38,7 @@ function Main() {
       alert(`Erro ${r.response.status}`);
       setLoading(false);
     })
-  }), [getRegisters]);
+  }), [getRegisters, date]);
 
   let sold = 0;
   for (let i = 0; i < cashFlow.length; i++) {
@@ -84,10 +84,14 @@ function Main() {
             <ion-icon name="exit-outline"></ion-icon>
           </div>
         </Top>
+        <SelectMonth loading={loading}>
+          <p onClick={() => setDate(date.subtract(1, 'month'))}>{`<`}</p>
+          <h4>{months[date.month()]}</h4>
+          <p onClick={() => setDate(date.add(1, 'month'))}>{`>`}</p>
+        </SelectMonth>
         <Center loading={loading}>
           {loading ? <MutatingDots ariaLabel="loading-indicator" /> : 
             <>
-            <h1>{months[dateNow.month()]}</h1>
               <DivCash>
                 {cashFlow.map(cash => 
                   <Div type={cash.type}>
@@ -158,13 +162,38 @@ const Top = styled.div`
   }
 `;
 
+const SelectMonth = styled.div`
+  width: 87%;
+  margin-top: 12px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  p {
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: 700;
+
+    cursor: ${({ loading }) => loading ? "initial" : "pointer"};
+  }
+
+  h4 {
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: 700;
+
+    margin: 0 15px;
+  }
+`;
+
 const Center = styled.div`
   background-color: ${({ loading }) => loading ? "#F5F5F5" : "#FFFFFF"};
   border-radius: 5px;
 
   width: 87%;
   height: 65vh;
-  margin-top: 22px;
+  margin-top: 10px;
   margin-bottom: 13px;
   padding: 35px 20px;
 
