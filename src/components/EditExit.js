@@ -24,7 +24,7 @@ function EditExit() {
 
   useEffect((() => {
     setLoading(true);
-    const response = axios.get(`https://projeto-13-my-wallet.herokuapp.com/registers/${id}`, config);
+    const response = axios.get(`https://projeto-13-my-wallet.herokuapp.com/register/${id}`, config);
 
     response.then(r => {
       setExit({value:r.data.value, description:r.data.description});
