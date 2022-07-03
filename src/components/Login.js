@@ -16,7 +16,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
 
-    const response = axios.post("https://git.heroku.com/projeto-13-my-wallet.git/sign-in", {...userLogin});
+    const response = axios.post("https://projeto-13-my-wallet.herokuapp.com/sign-in", {...userLogin});
 
     response.then(r => {
       setUser(r.data);

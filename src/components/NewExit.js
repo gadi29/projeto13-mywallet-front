@@ -25,7 +25,7 @@ function NewExit() {
       }
     }
 
-    const response = axios.post('https://git.heroku.com/projeto-13-my-wallet.git/exit', {...newExit}, config);
+    const response = axios.post('https://projeto-13-my-wallet.herokuapp.com/exit', {...newExit}, config);
     response.then (r => {
       setLoading(false);
       alert(`Saída registrada com sucesso!`);

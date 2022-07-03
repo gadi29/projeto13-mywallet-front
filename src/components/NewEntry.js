@@ -25,7 +25,7 @@ function NewEntry() {
       }
     }
 
-    const response = axios.post('https://git.heroku.com/projeto-13-my-wallet.git/entry', {...newEntry}, config);
+    const response = axios.post('https://projeto-13-my-wallet.herokuapp.com/entry', {...newEntry}, config);
     response.then (r => {
       setLoading(false);
       alert(`Entrada registrada com sucesso!`);
