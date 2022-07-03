@@ -113,7 +113,7 @@ const Container = styled.div`
     }
 
     button {
-      background-color: ${({ loading }) => loading ? '#8C11BE' : '#A328D6'};
+      background-color: #A328D6;
       border: none;
       border-radius: 5px;
       cursor: pointer;
