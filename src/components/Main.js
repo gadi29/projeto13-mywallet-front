@@ -107,7 +107,7 @@ function Main() {
                 )}
               </DivCash>
               <DivSaldo sold={sold} >
-                <h1>SALDO</h1>
+                <h1>SALDO MENSAL</h1>
                 <h2>{sold.toFixed(2).replace('-','').replace('.',',')}</h2>
               </DivSaldo>
             </>
@@ -143,7 +143,7 @@ const Container = styled.div`
 
 const Top = styled.div`
   width: 87%;
-  margin-top: 35px;
+  margin-top: 25px;
 
   display: flex;
   justify-content: space-between;
@@ -164,7 +164,7 @@ const Top = styled.div`
 
 const SelectMonth = styled.div`
   width: 87%;
-  margin-top: 12px;
+  margin-top: 20px;
 
   display: flex;
   justify-content: center;
@@ -274,7 +274,6 @@ const DivSaldo = styled.div`
 
 const Bottom = styled.div`
   width: 87%;
-  margin-bottom: 25px;
 
   display: flex;
   justify-content: space-between;
