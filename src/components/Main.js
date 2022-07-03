@@ -33,7 +33,7 @@ function Main() {
       alert(`Erro ${r.response.status}`);
       setLoading(false);
     })
-  }), []);
+  }), [loading]);
 
   let sold = 0;
   for (let i = 0; i < cashFlow.length; i++) {
