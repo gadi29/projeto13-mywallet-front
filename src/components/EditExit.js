@@ -15,8 +15,14 @@ function EditExit() {
     description: ""
   });
 
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${user.token}`
+    }
+  };
+
   useEffect((() => {
-    const response = axios.get(`https://projeto-13-my-wallet.herokuapp.com/registers/${id}`);
+    const response = axios.get(`https://projeto-13-my-wallet.herokuapp.com/registers/${id}`, config);
 
     response.then(r => {
       setExit({value:r.data.value, description:r.data.description});
@@ -27,12 +33,6 @@ function EditExit() {
   function updateExit(e) {
     e.preventDefault();
     setLoading(true);
-
-    const config = {
-      headers: {
-        "Authorization": `Bearer ${user.token}`
-      }
-    }
 
     const response = axios.put(`https://projeto-13-my-wallet.herokuapp.com/registers/${id}`, {...exit}, config);
 
