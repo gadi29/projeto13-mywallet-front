@@ -53,6 +53,7 @@ function ShowRegisters ({ monthRegisters, config, date, setDate, setLoading, rel
           <h4>{actualMonth}</h4>
           <p onClick={() => setDate(date.add(1, 'month'))}>{`>`}</p>
         </SelectMonth>
+        {monthRegisters.length > 0 ? 
         <RegistersList>
           {monthRegisters.map(register => 
             <Register type={register.type}>
@@ -66,13 +67,13 @@ function ShowRegisters ({ monthRegisters, config, date, setDate, setLoading, rel
               </div>
             </Register>
           )}
-        </RegistersList>
+        </RegistersList> : <NoRegisters>Não há registros neste mês</NoRegisters>}
       </Top>
       <Sold monthSold={monthSold} >
         <h1>SALDO MENSAL</h1>
         <h2>{monthSold.toFixed(2).replace('-','').replace('.',',')}</h2>
       </Sold>
-    </Container> 
+    </Container>
   );
 }
 
@@ -113,6 +114,13 @@ const SelectMonth = styled.div`
 
     margin: 0 15px;
   }
+`;
+
+const NoRegisters = styled.h2`
+  font-size: 18px;
+  color: #C2C2C2;
+
+  text-align: center;
 `;
 
 const RegistersList = styled.div `

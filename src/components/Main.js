@@ -65,9 +65,8 @@ function Main() {
         </Top>
         <Center loading={loading}>
           {loading ? <MutatingDots ariaLabel="loading-indicator" /> 
-          : monthRegisters.length > 0 ? 
-          <ShowRegisters monthRegisters={monthRegisters} config={config} date={date} setDate={setDate} setLoading={setLoading} reloadRegisters={reloadRegisters} setReloadRegisters={setReloadRegisters}/>
-            : <h5>Não há registros neste mês</h5>}
+          : <ShowRegisters monthRegisters={monthRegisters} config={config} date={date} setDate={setDate} setLoading={setLoading} reloadRegisters={reloadRegisters} setReloadRegisters={setReloadRegisters}/>
+          }
         </Center>
         <Bottom loading={loading}>
           <Link to={'/new_entry'}>
@@ -131,19 +130,11 @@ const Center = styled.div`
   
   overflow: scroll;
   display: flex;
-  flex-direction: ${({ loading }) => loading ? "row" : "column"};
-  justify-content: ${({ loading }) => loading ? "center" : "space-between"};
-  align-items: ${({ loading }) => loading ? "center" : "initial"};
+  justify-content: center;
+  align-items: center;
 
   ::-webkit-scrollbar {
     display: none;
-  }
-
-  h5 {
-    font-size: 18px;
-    color: #C2C2C2;
-
-    text-align: center;
   }
 `;
 
