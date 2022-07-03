@@ -23,12 +23,22 @@ function Main() {
     }
   };
 
+  function orderArray (a, b) {
+    if (a.date > b.date) {
+      return 1;
+    }
+    if (a.date < b.date) {
+      return -1;
+    }
+    return 0;
+  }
+
   useEffect((() => {
     setLoading(true);
     const response = axios.get(`https://projeto-13-my-wallet.herokuapp.com/registers/${date.format('MM-YYYY')}`, config);
 
     response.then(r => {
-      setCashFlow([...r.data]);
+      setCashFlow([...r.data].sort(orderArray));
       setLoading(false);
     });
     response.catch(r => {
